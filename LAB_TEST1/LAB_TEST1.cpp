@@ -6,63 +6,81 @@ int main() {
     int roomType, nights;
     double pricePerNight = 0, subtotal = 0, discount = 0, finalTotal = 0;
     char promo;
+    char again;
 
     cout << "=====================================================\n";
     cout << "           FTMK GRAND HOTEL BOOKING SYSTEM\n";
     cout << "=====================================================\n\n";
+    do {
 
-    cout << "1. Standard Room  - RM150.00 per night\n";
-    cout << "2. Deluxe Room    - RM200.00 per night\n";
-    cout << "3. Suite Room     - RM300.00 per night\n\n";
 
-    cout << "Enter room type (1-3): ";
-    cin >> roomType;
+        cout << "1. Standard Room  - RM150.00 per night\n";
+        cout << "2. Deluxe Room    - RM200.00 per night\n";
+        cout << "3. Suite Room     - RM300.00 per night\n";
 
-    if (roomType < 1 || roomType > 3) {
-        cout << "Invalid room type! Program terminated.\n";
-        return 0;
-    }
+        cout << "Enter room type (1-3): ";
+        cin >> roomType;
 
-    cout << "Enter number of nights: ";
-    cin >> nights;
+        if (roomType < 1 || roomType > 3) {
+            cout << "Invalid room type! Program terminated.\n";
+            return 0;
+        }
 
-    if (nights <= 0) {
-        cout << "Invalid number of nights! Program terminated.\n";
-        return 0;
-    }
+        cout << "Enter number of nights: ";
+        cin >> nights;
 
-    // Room price selection
-    if (roomType == 1) pricePerNight = 150;
-    else if (roomType == 2) pricePerNight = 200;
-    else if (roomType == 3) pricePerNight = 300;
+        if (nights <= 0) {
+            cout << "Invalid number of nights! Program terminated.\n";
+            return 0;
+        }
 
-    // Display selected room
-    if (roomType == 1) cout << "\nYou selected Standard Room.\n";
-    else if (roomType == 2) cout << "\nYou selected Deluxe Room.\n";
-    else cout << "\nYou selected Suite Room.\n";
+        // Room price selection
+        if (roomType == 1) {
+            pricePerNight = 150;
+        }
+        else if (roomType == 2) {
+            pricePerNight = 200;
+        }
+        else if (roomType == 3) {
+            pricePerNight = 300;
+        }
 
-    // Calculate subtotal
-    subtotal = pricePerNight * nights;
+        // Display selected room
+        if (roomType == 1) {
+            cout << "\nYou selected Standard Room.\n";
+        }
+        else if (roomType == 2) {
+            cout << "\nYou selected Deluxe Room.\n";
+        }
 
-    // Long stay discount
-    if (nights >= 3 && nights <= 5) {
-        discount = subtotal * 0.05;
-    }
-    else if (nights > 5) {
-        discount = subtotal * 0.10;
-    }
+        else cout << "\nYou selected Suite Room.\n";
 
-    subtotal -= discount;
+        // Calculate subtotal
+        subtotal = pricePerNight * nights;
 
-    // Promo code
-    cout << "\nDo you have a promo code? (Y for Yes / N for No): ";
-    cin >> promo;
+        // Long stay discount
+        if (nights >= 3 && nights <= 5) {
+            discount = subtotal * 0.05;
+        }
+        else if (nights > 5) {
+            discount = subtotal * 0.10;
+        }
 
-    if (promo == 'Y' || promo == 'y') {
-        subtotal = subtotal * 0.90; // extra 10% discount
-    }
+        subtotal -= discount;
 
-    finalTotal = subtotal;
+        // Promo code
+        cout << "\nDo you have a promo code? (Y for Yes / N for No): ";
+        cin >> promo;
+
+        if (promo == 'Y' || promo == 'y') {
+            subtotal = subtotal * 0.90; // extra 10% discount
+        }
+
+        finalTotal = subtotal;
+
+        cout << "Do you want to add more booking? (Y/N)";
+        cin >> again;
+    } while (again == 'Y' || again == 'y');
 
     // DISPLAY SUMMARY
     cout << "\n------------------ BOOKING SUMMARY ------------------\n\n";
