@@ -13,6 +13,18 @@ double getPrice(int roomType) {
         return 0.00;
 }
 
+//(b)calculateDiscount
+double calculateDiscount(double subtotal, int night) {
+    double discount = 0.0;
+    if (night >= 3 && night<= 5) {
+        discount = subtotal * 0.05;
+    }
+    else if (night> 5) {
+        discount = subtotal * 0.10;
+    }
+    return discount;
+}
+
 int main() {
     int roomType, nights;
     double pricePerNight = 0, subtotal = 0, discount = 0, finalTotal = 0;
