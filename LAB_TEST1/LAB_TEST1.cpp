@@ -1,6 +1,7 @@
 #include <iostream>
 #include <iomanip>
 using namespace std;
+
 // (a) getPrice
 double getPrice(int roomType) {
     if (roomType == 1)
@@ -25,12 +26,59 @@ double calculateDiscount(double subtotal, int night) {
     return discount;
 }
 
+//(c)computeAmounts
+void computeAmounts(int nights, double pricePerNight,double& subtotal, double& discount, double& afterDiscount){
+    subtotal = pricePerNight * nights;
+    discount = calculateDiscount(subtotal, nights);
+    afterDiscount = subtotal - discount;
+}
+
+//(d)promoCode
+double applyPromo(char promoCode, double subtotal) {
+    if (promoCode == 'Y' || promoCode == 'y')
+        return subtotal * 0.05;   // 5% promo discount
+    else
+        return 0;
+}
+
+//(e)displayMessage
+void displayMessage(double finalTotal) {
+    if (finalTotal > 1200)
+        cout << "VIP CUSTOMER: You are eligible for free airport pickup!\n";
+    else if (finalTotal < 300)
+        cout << "Enjoy your vacation!\n";
+    else
+        cout << "Thank you for booking with FTMK Grand Hotel.\n";
+}
+
+//(f)displaySummary
+void displaySummary(double pricePerNight, int nights,
+    double subtotal, double discount,
+    double finalTotal)
+{
+    cout << "\n------------------ BOOKING SUMMARY ------------------\n\n";
+
+    cout << fixed << setprecision(2);
+
+    cout << "Price per Night   : RM" << pricePerNight << endl;
+    cout << "Nights Stayed     : " << nights << endl;
+    cout << "Subtotal          : RM" << subtotal << endl;
+    cout << "Discount          : RM" << discount << endl;
+
+    cout << "------------------------------------------------------\n";
+    cout << "Final Total       : RM" << finalTotal << endl;
+    cout << "------------------------------------------------------\n\n";
+}
+
+
 int main() {
     int roomType, nights;
     double pricePerNight = 0, subtotal = 0, discount = 0, finalTotal = 0;
+    double grandTotal = 0.0;
     char promo;
     char again;
 
+   
     cout << "=====================================================\n";
     cout << "           FTMK GRAND HOTEL BOOKING SYSTEM\n";
     cout << "=====================================================\n\n";
@@ -49,6 +97,9 @@ int main() {
             return 0;
         }
 
+        //getPrice
+        pricePerNight = getPrice(roomType);
+
         cout << "Enter number of nights: ";
         cin >> nights;
 
@@ -57,16 +108,6 @@ int main() {
             return 0;
         }
 
-        // Room price selection
-        if (roomType == 1) {
-            pricePerNight = 150;
-        }
-        else if (roomType == 2) {
-            pricePerNight = 200;
-        }
-        else if (roomType == 3) {
-            pricePerNight = 300;
-        }
 
         // Display selected room
         if (roomType == 1) {
@@ -81,61 +122,39 @@ int main() {
         // Calculate subtotal
         subtotal = pricePerNight * nights;
 
-        // Long stay discount
-        if (nights >= 3 && nights <= 5) {
-            discount = subtotal * 0.05;
-        }
-        else if (nights > 5) {
-            discount = subtotal * 0.10;
-        }
-
+        //calculateDiscount
+        subtotal = pricePerNight * nights;
+        discount = calculateDiscount(subtotal, nights);
         subtotal -= discount;
 
-        // Promo code
+        //computeAmounts
+        computeAmounts(pricePerNight, nights, subtotal, discount, finalTotal);
+
+
+        // promoCode
         cout << "\nDo you have a promo code? (Y for Yes / N for No): ";
         cin >> promo;
 
-        if (promo == 'Y' || promo == 'y') {
-            subtotal = subtotal * 0.90; // extra 10% discount
-        }
+        double promoDiscount = applyPromo(promo, finalTotal);
+        finalTotal -= promoDiscount;
 
-        finalTotal = subtotal;
+        grandTotal += finalTotal;
 
-        cout << "Do you want to add more booking? (Y/N)";
+        cout << "Do you want to add more booking? (Y/N) ";
         cin >> again;
+
     } while (again == 'Y' || again == 'y');
 
-    // DISPLAY SUMMARY
-    cout << "\n------------------ BOOKING SUMMARY ------------------\n\n";
+    displaySummary(pricePerNight, nights, subtotal, discount, finalTotal);
 
-    cout << fixed << setprecision(2);
+    displayMessage(finalTotal);
 
-    cout << "Price per Night   : RM" << pricePerNight << endl;
-    cout << "Nights Stayed     : " << nights << endl;
-
-    cout << "Subtotal          : RM" << (pricePerNight * nights) << endl;
-
-    if (discount > 0)
-        cout << "Discount (" << (discount / (pricePerNight * nights) * 100)
-        << "%): RM" << discount << endl;
-    else
-        cout << "Discount          : RM0.00\n";
-
-    cout << "------------------------------------------------------\n";
-
-    cout << "Final Total       : RM" << finalTotal << endl;
-
-    cout << "------------------------------------------------------\n\n";
-
-    // FINAL MESSAGE
-    if (finalTotal > 1200)
-        cout << "VIP CUSTOMER: You are eligible for free airport pickup!\n";
-    else if (finalTotal < 300)
-        cout << "Enjoy your vacation!\n";
-    else
-        cout << "Thank you for booking with FTMK Grand Hotel.\n";
 
     cout << "=====================================================\n";
+
+    cout << "\n================ GRAND TOTAL =================\n";
+    cout << "Grand Total for all bookings: RM" << fixed << setprecision(2) << grandTotal << endl;
+    cout << "================================================\n";
 
     return 0;
 }
