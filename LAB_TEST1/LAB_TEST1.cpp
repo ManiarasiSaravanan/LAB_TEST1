@@ -2,16 +2,15 @@
 #include <iomanip>
 using namespace std;
 
-// (a) getPrice
-double getPrice(int roomType) {
-    if (roomType == 1)
-        return 150.00;
-    else if (roomType == 2)
-        return 200.00;
-    else if (roomType == 3)
-        return 300.00;
+//(a) getPrice using array
+double getPrice(int roomType)
+{
+    double prices[3] = { 150.00, 200.00, 300.00 };
+
+    if (roomType >= 1 && roomType <= 3)
+        return prices[roomType - 1];
     else
-        return 0.00;
+        return 0.0;
 }
 
 //(b)calculateDiscount
